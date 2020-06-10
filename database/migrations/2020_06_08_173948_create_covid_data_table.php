@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCountriesTable extends Migration
+class CreateCovidDataTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,13 @@ class CreateCountriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('countries', function (Blueprint $table) {
+        Schema::create('covid_data', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('code');
-            $table->string('slug')->unique();
+            $table->integer('country_id')->unsigned();
+            $table->bigInteger('total_confirmed')->unsigned();
+            $table->bigInteger('total_deaths')->unsigned();
+            $table->bigInteger('total_recovered')->unsigned();
+            $table->date('date');
             $table->timestamps();
         });
     }
@@ -29,6 +31,6 @@ class CreateCountriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('countries');
+        Schema::dropIfExists('covid_data');
     }
 }

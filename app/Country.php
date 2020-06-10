@@ -11,11 +11,9 @@ class Country extends Model
         'name',
         'code',
         'slug',
-        'total_confirmed',
-        'new_confirmed',
-        'total_deaths',
-        'new_deaths',
-        'total_recovered',
-        'new_recovered',
     ];
+
+    public function covidData(){
+        return $this->hasMany('App\CovidData');
+    }
 }

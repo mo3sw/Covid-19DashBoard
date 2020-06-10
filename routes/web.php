@@ -14,8 +14,10 @@ use App\Http\Controllers\CountryController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'CountryController@show');
 
 Route::get('/test', 'CountryController@updateAll');
+
+Route::get('/test2', function(){
+    return view('main');
+});

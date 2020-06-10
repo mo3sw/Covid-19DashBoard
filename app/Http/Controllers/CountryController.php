@@ -12,12 +12,32 @@ class CountryController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  void
+     * @return view
      */
-    public function show($id)
+    public function show()
     {
         //
+        $countries = Country::all();
+        $total_cases = 0;
+        $new_cases = 0;
+        $total_recovered = 0;
+        $new_recovered = 0;
+        $total_deaths = 0;
+        $new_deaths = 0;
+        foreach($countries as $country){
+            $data = $country->covidData()->orderBy('date', 'desc')->take(2)->get();
+            // return $data;
+            if(count($data)){
+                $total_cases += $data[0]->total_confirmed;
+                $new_cases += $data[0]->total_confirmed - $data[1]->total_confirmed;
+                $total_recovered += $data[0]->total_recovered;
+                $new_recovered += $data[0]->total_recovered - $data[1]->total_recovered;
+                $total_deaths += $data[0]->total_deaths;
+                $new_deaths += $data[0]->total_deaths - $data[1]->total_deaths;
+            }
+        }
+        return view('main', ['total_cases'=>$total_cases, 'new_cases'=>$new_cases, 'total_recovered'=>$total_recovered, 'new_recovered'=>$new_recovered, 'total_deaths'=>$total_deaths, 'new_deaths'=>$new_deaths]);
     }
 
     /**

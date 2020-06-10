@@ -40,6 +40,7 @@ class CountryController extends Controller
     private function populateTables(){
 
         ini_set('max_execution_time', -1);
+        ini_set('memory_limit', -1);
 
         $client = new \GuzzleHttp\Client();
         $response = $client->request('GET', 'https://api.covid19api.com/countries');
@@ -73,6 +74,7 @@ class CountryController extends Controller
 
     private function updateData($countries){
         ini_set('max_execution_time', -1);
+        ini_set('memory_limit', '-1');
 
         $client = new \GuzzleHttp\Client();
         foreach($countries as $country){

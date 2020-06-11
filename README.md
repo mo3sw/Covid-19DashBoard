@@ -92,6 +92,69 @@ The following diagram might help:
 ![ER diagram](image.png)
 
 ## Controllers
+
+In this system, I have only one controller called 'CountryController'. It has the following methods:
+
+#### changeCountryAPI($name)
+
+This method should handle the AJAX requests from the front-end to update the data to a specified country.
+
+###### Parameters:
+
+- name: which is the country name
+
+###### Return:
+
+- JSON object that has the following information: total_cases, new_cases, total_recovered, new_recovered, total_deaths, new_deaths, active_cases, and new_active_cases. Or it returns "Error".
+
+#### show()
+
+This method should handle the request to display the page. It will calculate the global numbers and construct the view.
+
+###### Parameters:
+
+- void
+
+###### Return:
+
+- a View
+
+#### updateAll()
+
+This method is resposible to decide whether we should populate the tables if they are empty (populateTables method will be called) or fetch the latest data (updateData method will be called). It should be called periodically through a cron job in the server. I have initiated the Laravel part to run daily.
+
+###### Parameters:
+
+- void
+
+###### Return:
+
+- void
+
+#### populateTables()
+
+This method is responsible to fetch all the data from the API and store them in the Databse. This method will be called only if the countries table is empty.
+
+###### Parameters:
+
+- void
+
+###### Return:
+
+- void
+
+#### updateData($countries)
+
+This method is responsible to fetch the latest data from the API and store them in the database for each country.
+
+###### Parameters:
+
+- Collection of countries data stored in the database
+
+###### Return:
+
+- void
+
 ## View
 ## Diffulties faced
 ## Enhancement Opportunities

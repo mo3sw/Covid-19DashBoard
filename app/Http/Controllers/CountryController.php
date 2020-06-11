@@ -9,6 +9,38 @@ use Illuminate\Http\Request;
 
 class CountryController extends Controller
 {
+    public function changeCountryAPI($name){
+        $country = Country::where('name', $name)->first();
+        if($country != []){
+            $data = $country->covidData()->orderBy('date', 'desc')->take(2)->get();
+            if(count($data)){
+                $total_cases = $data[0]->total_confirmed;
+                $new_cases = $data[0]->total_confirmed - $data[1]->total_confirmed;
+                $total_recovered = $data[0]->total_recovered;
+                $new_recovered = $data[0]->total_recovered - $data[1]->total_recovered;
+                $total_deaths = $data[0]->total_deaths;
+                $new_deaths = $data[0]->total_deaths - $data[1]->total_deaths;
+                $jsonObj[] = [
+                    'total_cases' => $total_cases,
+                    'new_cases' => $new_cases,
+                    'total_recovered' => $total_recovered,
+                    'new_recovered' => $new_recovered,
+                    'total_deaths' => $total_deaths,
+                    'new_deaths' => $new_deaths,
+                    'active_cases' => $total_cases - $total_recovered - $total_deaths,
+                    'new_active_cases' => $new_cases - $new_recovered - $new_deaths
+                ];
+                return json_encode($jsonObj);
+            }
+            else{
+                return "Error";
+            }
+        }
+        else{
+            return "Error";
+        }
+    }
+
     /**
      * Display the specified resource.
      *
@@ -18,7 +50,7 @@ class CountryController extends Controller
     public function show()
     {
         //
-        $countries = Country::all();
+        $countries = Country::all()->sortBy('name');
         $total_cases = 0;
         $new_cases = 0;
         $total_recovered = 0;
@@ -37,7 +69,7 @@ class CountryController extends Controller
                 $new_deaths += $data[0]->total_deaths - $data[1]->total_deaths;
             }
         }
-        return view('main', ['total_cases'=>$total_cases, 'new_cases'=>$new_cases, 'total_recovered'=>$total_recovered, 'new_recovered'=>$new_recovered, 'total_deaths'=>$total_deaths, 'new_deaths'=>$new_deaths]);
+        return view('main', ['countries'=>$countries, 'total_cases'=>$total_cases, 'new_cases'=>$new_cases, 'total_recovered'=>$total_recovered, 'new_recovered'=>$new_recovered, 'total_deaths'=>$total_deaths, 'new_deaths'=>$new_deaths]);
     }
 
     /**
@@ -46,7 +78,7 @@ class CountryController extends Controller
      * @param void
      * @return void
      */
-    public function updateAll(){
+    public static function updateAll(){
         $countries = Country::all();
         $countriesTest = $countries->first();
         if($countriesTest == Null){

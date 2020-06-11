@@ -119,15 +119,57 @@
                 color:rgb(240, 185, 6)
             }
         </style>
+        <script>
+            function changeCountry(myOption){
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        console.log("success");
+                        console.log(this.responseText);
+                        if(this.responseText == "Error"){
+                            alert("This country does not have suffiecient data! Please try again.");
+                            return;
+                        }
+                        var data = JSON.parse(this.responseText);
+                        document.getElementById("total_cases").innerHTML = data[0].total_cases;
+                        document.getElementById("new_cases").innerHTML = data[0].new_cases;
+                        document.getElementById("active_cases").innerHTML = data[0].active_cases;
+                        document.getElementById("new_active").innerHTML = data[0].new_active_cases;
+                        document.getElementById("total_recovered").innerHTML = data[0].total_recovered;
+                        document.getElementById("new_recovered").innerHTML = data[0].new_recovered;
+                        document.getElementById("total_deaths").innerHTML = data[0].total_deaths;
+                        document.getElementById("new_deaths").innerHTML = data[0].new_deaths;
+                        var recovery_rate_total = data[0].total_recovered/parseFloat(data[0].total_cases)*100;
+                        document.getElementById("recovery_rate_total").innerHTML = recovery_rate_total.toFixed(2)+"%";
+                        var recovery_rate_Closed = parseFloat(data[0].total_recovered)/(parseFloat(data[0].total_recovered)+parseFloat(data[0].total_deaths))*100;
+                        document.getElementById("recovery_rate_Closed").innerHTML = recovery_rate_Closed.toFixed(2)+"%";
+                        var death_rate_total= parseFloat(data[0].total_deaths)/parseFloat(data[0].total_cases)*100;
+                        document.getElementById("death_rate_total").innerHTML = death_rate_total.toFixed(2)+"%";
+                        var death_rate_closed = parseFloat(data[0].total_deaths)/(parseFloat(data[0].total_recovered)+parseFloat(data[0].total_deaths))*100;
+                        document.getElementById("death_rate_closed").innerHTML = death_rate_closed.toFixed(2)+"%";
+                    }
+                };
+                console.log("/changeCountry/"+myOption.options[myOption.selectedIndex].text);
+                xhttp.open("GET", "/changeCountry/"+myOption.options[myOption.selectedIndex].text, true);
+                xhttp.send();
+            }
+        </script>
     </head>
     @php
         $active_cases = $total_cases - $total_recovered - $total_deaths;
         $new_active_cases = $new_cases - $new_recovered - $new_deaths;
-
-        $recovery_rate_total = substr(strval($total_recovered/$total_cases*100),0,4);
-        $recovery_rate_Closed = substr(strval($total_recovered/($active_cases+$total_deaths)*100),0,4);
-        $death_rate_total = substr(strval($total_deaths/$total_cases*100),0,4);
-        $death_rate_closed = substr(strval($total_deaths/($active_cases+$total_deaths)*100),0,4);
+        if($total_cases != 0 && $active_cases+$total_deaths != 0){
+            $recovery_rate_total = substr(strval($total_recovered/$total_cases*100),0,4);
+            $recovery_rate_Closed = substr(strval($total_recovered/($active_cases+$total_deaths)*100),0,4);
+            $death_rate_total = substr(strval($total_deaths/$total_cases*100),0,4);
+            $death_rate_closed = substr(strval($total_deaths/($active_cases+$total_deaths)*100),0,4);
+        }
+        else{
+            $recovery_rate_total = 0;
+            $recovery_rate_Closed = 0;
+            $death_rate_total = 0;
+            $death_rate_closed = 0;
+        }
     @endphp
     <body>
         <div class="flex-center position-ref full-height">
@@ -135,33 +177,44 @@
                 <div class="title m-b-md">
                     <b>Covid-19</b><br>Statistics Website
                 </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-append">
+                      <span class="input-group-text">Country:</span>
+                    </div>
+                    <select class="form-control" id="countryList" name="countryList" onchange="changeCountry(this)">
+                        <option>Global</option>
+                        @foreach ($countries as $country)
+                            <option>{{ $country->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
                 <div>
                     <div class="card cardText cardStyle" style="width:250px">
                         <div class="card-body">
                             <h6 class="card-title">Total Cases</h6>
-                            <h1 class="card-text">{{ $total_cases }}</h1>
-                            <p class="card-text">+{{ $new_cases }}</p>
+                            <h1 class="card-text" id="total_cases">{{ $total_cases }}</h1>
+                            <p class="card-text" id="new_cases">+{{ $new_cases }}</p>
                         </div>
                     </div>
                     <div class="card cardText cardStyle" style="width:250px">
                         <div class="card-body">
                             <h6 class="card-title">Active Cases</h6>
-                            <h1 class="card-text medium">{{ $active_cases }}</h1>
-                            <p class="card-text">+{{ $new_active_cases }}</p>
+                            <h1 class="card-text medium" id="active_cases">{{ $active_cases }}</h1>
+                            <p class="card-text" id="new_active">+{{ $new_active_cases }}</p>
                         </div>
                     </div>
                     <div class="card cardText cardStyle" style="width:250px">
                         <div class="card-body">
                             <h6 class="card-title">Recovered Cases</h6>
-                            <h1 class="card-text good">{{ $total_recovered }}</h1>
-                            <p class="card-text">+{{ $new_recovered }}</p>
+                            <h1 class="card-text good" id="total_recovered">{{ $total_recovered }}</h1>
+                            <p class="card-text" id="new_recovered">+{{ $new_recovered }}</p>
                         </div>
                     </div>
                     <div class="card cardText cardStyle" style="width:250px">
                         <div class="card-body">
                             <h6 class="card-title">Death Cases</h6>
-                            <h1 class="card-text bad">{{ $total_deaths }}</h1>
-                            <p class="card-text">+{{ $new_deaths }}</p>
+                            <h1 class="card-text bad" id="total_deaths">{{ $total_deaths }}</h1>
+                            <p class="card-text" id="new_deaths">+{{ $new_deaths }}</p>
                         </div>
                     </div>
                 </div>
@@ -173,19 +226,19 @@
                         <tbody>
                             <tr>
                                 <td class="leftAligned">Recovery rate from total cases:</td>
-                                <td class="rightAligned good">{{ $recovery_rate_total }}%</td>
+                                <td class="rightAligned good" id="recovery_rate_total">{{ $recovery_rate_total }}%</td>
                             </tr>
                             <tr>
                                 <td class="leftAligned">Recovery rate from closed cases:</td>
-                                <td class="rightAligned good">{{ $recovery_rate_Closed }}%</td>
+                                <td class="rightAligned good" id="recovery_rate_Closed">{{ $recovery_rate_Closed }}%</td>
                             </tr>
                             <tr>
                                 <td class="leftAligned">Death rate from total cases:</td>
-                                <td class="rightAligned bad">{{ $death_rate_total }}%</td>
+                                <td class="rightAligned bad" id="death_rate_total">{{ $death_rate_total }}%</td>
                             </tr>
                             <tr>
                                 <td class="leftAligned">Death rate from close cases:</td>
-                                <td class="rightAligned bad">{{ $death_rate_closed }}%</td>
+                                <td class="rightAligned bad" id="death_rate_closed">{{ $death_rate_closed }}%</td>
                             </tr>
                         </tbody>
                     </table>

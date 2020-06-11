@@ -16,6 +16,8 @@ use App\Http\Controllers\CountryController;
 
 Route::get('/', 'CountryController@show');
 
+Route::get('/changeCountry/{name}', 'CountryController@changeCountryAPI');
+
 Route::get('/test', 'CountryController@updateAll');
 
 Route::get('/test2', function(){

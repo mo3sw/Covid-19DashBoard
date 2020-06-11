@@ -74,10 +74,6 @@ In order to ensure that the Laravel community is welcoming to all, please review
 
 If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
 
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-
 # Covid-19 Statistics System
 
 ## API Used (Data Source)
@@ -90,7 +86,15 @@ I have used the following:
 - <a href="https://api.covid19api.com/country/south-africa?from=2020-03-01T00:00:00Z&to=2020-04-01T00:00:00Z">https://api.covid19api.com/country/south-africa?from=2020-03-01T00:00:00Z&to=2020-04-01T00:00:00Z</a>
 
 ## Models
+
+I have decided to go with two model one which held the country information and the other which will hold the daily cases of the corona virus with a foriegn key to the country table. 
+The following diagram might help:
+![ER diagram](/images/image.png)
+
 ## Controllers
 ## View
 ## Diffulties faced
 ## Enhancement Opportunities
+## License
+
+The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).

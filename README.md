@@ -89,7 +89,7 @@ I have used the following:
 
 I have decided to go with two model one which held the country information and the other which will hold the daily cases of the corona virus with a foriegn key to the country table. 
 The following diagram might help:
-![ER diagram](/images/image.png)
+![ER diagram](image.png)
 
 ## Controllers
 ## View

@@ -77,3 +77,20 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+# Covid-19 Statistics System
+
+## API Used (Data Source)
+
+I have used the following API <a href="https://covid19api.com/">https://covid19api.com/</a>. It provides a good amount of different request handlers but it has showed some inconsistencyin showing the data for my requests.
+
+I have used the following:
+- <a href="https://api.covid19api.com/countries">https://api.covid19api.com/countries</a>
+- <a href="https://api.covid19api.com/total/dayone/country/south-africa">https://api.covid19api.com/total/dayone/country/south-africa</a>
+- <a href="https://api.covid19api.com/country/south-africa?from=2020-03-01T00:00:00Z&to=2020-04-01T00:00:00Z">https://api.covid19api.com/country/south-africa?from=2020-03-01T00:00:00Z&to=2020-04-01T00:00:00Z</a>
+
+## Models
+## Controllers
+## View
+## Diffulties faced
+## Enhancement Opportunities

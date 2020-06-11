@@ -87,9 +87,11 @@ I have used the following:
 
 ## Models
 
-I have decided to go with two model one which held the country information and the other which will hold the daily cases of the corona virus with a foriegn key to the country table. 
+I have decided to go with two model design which held the country information and the other which will hold the daily cases of the corona virus with a foriegn key to the country table. 
 The following diagram might help:
 ![ER diagram](image.png)
+
+This design will reduce or eliminate data redundancy in the database.
 
 ## Controllers
 
@@ -156,8 +158,45 @@ This method is responsible to fetch the latest data from the API and store them 
 - void
 
 ## View
-## Diffulties faced
+
+In the front-end part of the project, I went with Minimum viable product. The front-end has AJAX capabilities to update the data when the user changes the country.
+
+## Difficulties Faced
+
+###### API inconsistency
+
+I could not determine the cause of the problem but sometimes the request returns with limited data as request and in other times it returns all the data since the first case. I have taken that into considaration and made my code check for the date before using data.
+
+###### API wrong response
+
+- <a href="https://api.covid19api.com/total/dayone/country/au">Australia daily cumulative cases</a>
+- <a href="https://api.covid19api.com/dayone/country/au">Australia daily new cases</a>
+
+Both should represent the same country but one for the new cases and the other for totals. For some reason the cumulative did not return data. This does not happen to all the countries, the following links should be working fine.
+
+- <a href="https://api.covid19api.com/total/dayone/country/za">South Africa daily cumulative cases</a>
+- <a href="https://api.covid19api.com/dayone/country/za">South Africa daily new cases</a>
+
+###### max_execution_time and memory_limit exceptions
+
+I have faced these errors in the my costly methods and learned that I increase them.
+
+###### Date Format
+
+This was not a big issue but it was a new thing that a learned during the project.
+
 ## Enhancement Opportunities
+
+In these enhancements, I have took the development speed over the performance of the project. If one day the requirement changes, we can implement them to optimize the code.
+
+###### Reduce number of requests to update or populate data
+
+The populateTables metod in CountryController will have n+1 calls to the API where n = number of countries. The updateData metod in CountryController will also have n calls to the API where n = number of countries. This might be fixed by having one request which will bring all the data and process it internally.
+
+###### Replace heavy operations with lighter ones
+
+As I have read that Eloquent queries and operations are costly compared to Query Builder operation. Replacing them might give me better runtime results.
+
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).

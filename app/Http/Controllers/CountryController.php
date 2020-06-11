@@ -59,7 +59,6 @@ class CountryController extends Controller
         $new_deaths = 0;
         foreach($countries as $country){
             $data = $country->covidData()->orderBy('date', 'desc')->take(2)->get();
-            // return $data;
             if(count($data)){
                 $total_cases += $data[0]->total_confirmed;
                 $new_cases += $data[0]->total_confirmed - $data[1]->total_confirmed;

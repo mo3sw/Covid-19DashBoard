@@ -11,6 +11,16 @@
 
 ## Installation Process
 
+- Step 1: Clone the project to your local machine.
+- Step 2: Open the terminal in the project folder and run "composer install".
+- Step 3: Run the command "cp .env.example .env" in the terminal.
+- Step 4: Run the command "php artisan key:generate" in the terminal.
+- Step 5: Create a Database and make sure its info is reflected in the .env file.
+- Step 6: Run the command "php artisan migrate" in the terminal.
+
+The project should be up and running.
+Note: These commands is intended for Windows OS, it might change for other OSs.
+
 ## API Used (Data Source)
 
 I have used the following API <a href="https://covid19api.com/">https://covid19api.com/</a>. It provides a good amount of different request handlers but it has showed some inconsistencyin showing the data for my requests.

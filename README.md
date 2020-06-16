@@ -18,7 +18,7 @@
 - Step 5: Create a Database and make sure its info is reflected in the .env file.
 - Step 6: Run the command "php artisan migrate" in the terminal.
 
-The project should be up and running.
+The project should be ready, run the command "php artisan serve" to run on a localhost.
 Note: These commands is intended for Windows OS, it might change for other OSs.
 
 ## API Used (Data Source)

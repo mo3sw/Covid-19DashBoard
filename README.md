@@ -2,6 +2,15 @@
 
 # Covid-19 Statistics System
 
+## Technology used
+
+- PHP (version 7.4.2)
+- Laravel (version 7.14.1)
+- XAMPP Control Panel (v3.2.4)
+- guzzlehttp/guzzle package (version 6.5 - Laravel will require version 6.3 by default but I updated it)
+
+## Installation Process
+
 ## API Used (Data Source)
 
 I have used the following API <a href="https://covid19api.com/">https://covid19api.com/</a>. It provides a good amount of different request handlers but it has showed some inconsistencyin showing the data for my requests.
